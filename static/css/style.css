@@ -11,8 +11,24 @@
     --accent: #d95d39;
     --accent-dark: #a8442a;
     --line: #e3d9c9;
-    --text-muted: #6b6459;
+    --text-muted_alloff: #6b6459;
     --radius: 4px;
+    
+    --bg_panel: #0d1830;
+    --bg_deep: #060b1a;
+    --bg_royal: #163a7d;
+    --blue_electric: #3d6bf2;
+    --blue_glow: #6fa8ff;
+
+    /* Layout */
+    --container_width: 1100px;
+    --header_height: 76px;
+    --section_padding_y: 96px;
+    --radius_base: 6px;
+
+    --text_primary: #eef3ff;
+    --text_muted_Abt: #93a6c9;
+    --border_soft: rgba(111, 168, 255, 0.25);
 }
 
 body {
@@ -24,6 +40,14 @@ body {
 
 h1, .brand {
     font-family: "Space Grotesk", -apple-system, sans-serif;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0;}
+img {max-width: 100%; display: block;}
+ul{ list-style: none;}
+
+section[id] {
+    scroll-margin-top: var(--header_height);
 }
 
 .container {
@@ -103,8 +127,69 @@ h1, .brand {
     line-height: 0.95;
 }
 
+/* Untuk Visual*/
+.section_alt {
+    background: var(--bg_panel);
+}
+
+.section_inner {
+    max-width: var(--container_width);
+    margin: 0 auto;
+    position: relative;
+    z-index: 1;
+}
+
+/* Untuk Section About*/
+.section_inner-split {
+    display: grid;
+    grid-template-columns: 1.1fr 0.9fr;
+    gap: 48px;
+    align-items: center;
+}
+
+.section_inner-reserve {
+    grid-template-columns: 0.9fr 1.1fr;
+}
+.section_inner-reserve > *:first-child { order: 2;}
+.section_inner-reserve > *:last-child { order: 1;}
+
+/* ===== SECTION ABOUT ===== */
+.about-desc {
+    color: var(--text_muted_Abt);
+    margin: 20px 0 28px;
+    max-width: 56ch;
+}
+.about-funfact{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.about-funfact li {
+    display: flex;
+    gap: 8px;
+    font-size: 0.95rem;
+}
+.about-funfact li span {
+    color: var(--blue_glow);
+    min-width: 110px;
+}
+
+.photo-about_frame img {
+    width: 100%;
+    aspect-ratio: 4 / 5;
+    object-fit: cover;
+}
+
+.photo-about_frame {
+    position: relative;
+    border: 1px solid var(--border_soft);
+    border-radius: var(--radius_base);
+    overflow: hidden;
+    clip-path: polygon(0 6%, 100% 0, 100% 94%, 0 100%);
+}
 .bio {
-    color: var(--text-muted);
+    color: var(--text_muted_Abt);
     max-width: 480px;
     margin-bottom: 1.5rem;
 }

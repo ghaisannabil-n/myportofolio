@@ -8,8 +8,8 @@
 :root {
     --ink: #1c1917;
     --paper: #faf6f0;
-    --accent: #d95d39;
-    --accent-dark: #a8442a;
+    --accent: #3d6bf2;
+    --accent-dark: #6fa8ff;
     --line: #e3d9c9;
     --text-muted_alloff: #6b6459;
     --radius: 4px;
@@ -29,6 +29,35 @@
     --text_primary: #eef3ff;
     --text_muted_Abt: #93a6c9;
     --border_soft: rgba(111, 168, 255, 0.25);
+
+    --p3-dark: #060b1a;
+    --p3-panel: #0d1830;
+    --p3-cyan: #3d6bf2;
+    --p3-glow: rgba(111, 168, 255,0.15);
+}
+
+#profile {
+    background-color: var(--p3-dark);
+    background-image: radial-gradient(var(--p3-glow) 1.5px, transparent 1.5px);
+    background-size: 25px 25px;
+}
+
+#about {
+    background-color: var(--p3-dark);
+    background-image: radial-gradient(var(--p3-glow) 1.5px, transparent 1.5px);
+    background-size: 25px 25px;
+}
+
+#skills {
+    background-color: var(--p3-dark);
+    background-image: radial-gradient(var(--p3-glow) 1.5px, transparent 1.5px);
+    background-size: 25px 25px;
+}
+
+#experience {
+    background-color: var(--p3-dark);
+    background-image: radial-gradient(var(--p3-glow) 1.5px, transparent 1.5px);
+    background-size: 25px 25px;
 }
 
 body {
@@ -50,7 +79,7 @@ h1, .brand {
 
 /* Header with Flexbox */
 .site-header {
-    border-bottom: 1px solid var(--line);
+    background-color: var(#3d6bf2);
 }
 
 .site-header .container {
@@ -117,7 +146,10 @@ h1, .brand {
 .hero-identity h1 {
     font-size: clamp(3rem, 7vw, 5rem);
     line-height: 0.95;
+    color: var(--text_primary);
 }
+
+
 
 /* Untuk Visual*/
 .section_alt {
@@ -129,6 +161,10 @@ h1, .brand {
     margin: 0 auto;
     position: relative;
     z-index: 1;
+}
+
+.section_inner h2 {
+    color: var(--text_primary);
 }
 
 /* Untuk Section About*/
@@ -148,8 +184,8 @@ h1, .brand {
 /* ===== SECTION ABOUT ===== */
 .about-desc {
     color: var(--text_muted_Abt);
-    margin: 20px 0 28px;
-    max-width: 56ch;
+    margin-bottom: 1.5rem;
+    font-size: 0.95rem;
 }
 .about-funfact{
     display: flex;
@@ -195,12 +231,105 @@ h1, .brand {
 
 .photo-about {
     flex: 1;
-    max-width: 250px;
+    max-width: 70%;
     position: relative;
 }
 
 .text-about {
-    flex: 2;
+    flex: 1.5;
+}
+
+.highlight-blue {
+    color: var(--blue_glow);
+}
+.p3-abt-section {
+    background-color: var(--bg_deep);
+    position: relative;
+}
+
+.p3-abt-title {
+    color: var(--text_primary);
+    font-family: "Space Grotesk", sans-serif;
+    font-size: 2rem;
+    line-height: 1.2;
+    margin-bottom: 1rem;
+}
+
+.about-kick{
+    display: inline-block;
+    border: 1px solid var(--border_soft);
+    background-color: var(--bg_royal);
+    color: var(--blue_glow);
+    border-radius: 4px;
+    margin-bottom: 1rem;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    padding: 4px 12px;
+}
+
+.p3-abt-effect {
+    position: absolute;
+    background: radial-gradient(circle, rgba(111, 168, 255, 0.3) 0%, transparent 70%);
+    border-radius: 50%;
+    left: -20px;
+    bottom: -20px;
+    width: 120px;
+    height: 120px;
+    z-index: 0;
+    animation: waterPulse 4s ease-in-out infinite;
+}
+
+.about-grid {
+    display: flex;
+    margin-bottom: 1.5rem;
+    gap: 1rem;
+}
+
+.p3-box {
+    flex: 1;
+    border: 1px solid var(--blue_electric);
+    background-color: var(--bg_panel);
+    border-radius: 4px;
+    box-shadow: 4px 4px 0px var(--blue_electric);
+    text-align: center;
+    padding: 0.8rem;
+}
+
+.grid-label {
+    color: var(--text_muted_Abt);
+    letter-spacing: 1px;
+    font-size: 0.7rem;
+    text-transform: uppercase;
+}
+
+.grid-num {
+    display: block;
+    color: var(--text_primary);
+    font-family: "Space Grotesk", sans-serif;
+    font-size: 1.2rem;
+    font-weight: 700;
+}
+
+.p3-btn {
+    display: inline-block;
+    background-color: var(--blue_electric);
+    border-radius: 4px;
+    color: #ffffff;
+    padding: 0.6rem 1.5rem;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 0.9rem;
+    letter-spacing: 1px;
+    box-shadow: 4px 4px 0px rgba(0, 0, 0, 0.5);
+    transition: all 0.2s ease;
+}
+
+.p3-btn:hover {
+    background-color: var(--blue_glow);
+    color: var(--bg_deep);
+    transform: translateY(-2px);
 }
 /* ============================ */
 
@@ -441,27 +570,30 @@ h1, .brand {
 .about-img {
     width: 100%;
     height: auto;
-    border-radius: 12px;
+    aspect-ratio: 3/4;
+    border-radius: 6px;
     object-fit: cover;
     position: relative;
     z-index: 1;
+    border: 2px solid var(--blue_electric);
 }
 
 /* Footer dan Responsive */
 .site-footer {
-    padding: 1.5rem;
-    color: var(--text-muted);
-    font-size: 0.85rem;
-    border-top: 1px solid var(--line);
+    background-color: #163a7d;
+    color: #ffffff;
+    border-top: 2px solid #3d6bf2;
+    text-align: center;
+    padding: 1.5rem 0;
 }
 
 .photo-block_about{
     position: absolute;
-    top: 1.25rem;
-    left: 1.25rem;
+    top: 1rem;
+    left: 1rem;
     width: 100%;
     height: 100%;
-    background-color: var(--accent);
+    background-color: var(--blue_electric);
     border-radius: var(--radius);
     z-index: 0;
 }
@@ -550,4 +682,10 @@ h1, .brand {
     100% {
         transform: translateX(-50%);
     }
+}
+
+@keyframes waterPulse {
+    0% { transform: scale(0.9); opacity: 0.5;}
+    50% { transform: scale(1.2); opacity: 0.9;}
+    100% { transform: scale(0.9); opacity: 0.5;}
 }

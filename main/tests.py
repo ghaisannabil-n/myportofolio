@@ -57,3 +57,28 @@ class MainTest(TestCase):
         self.assertFalse(self.experience.is_ongoing)
         self.assertContains(response, "Selesai")
         self.assertNotContains(response, "Sedang berlangsung")
+
+class EducationTest(TestCase):
+    def test_education_url_temp(self):
+        response = self.client.get(reverse("main:show_education"))
+
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, "education.html")
+
+    def test_education_page_empty(self):
+        Education.objects.all().delete()
+        response = self.client.get(reverse("main:show_education"))
+
+        self.assertContains(response, "Belum ada data riwayat pendidikan.")
+
+    def test_education_page_data(self):
+        Education.objects.create(
+            institution="Universitas Indonesia",
+            degree="Sarjana Sistem Informasi",
+            year="2025"
+        )
+
+        response = self.client.get(reverse("main:show_education"))
+
+        self.assertContains(response, "Sarjana Sistem Informasi")
+        self.assertContains(response, "Universitas Indonesia")

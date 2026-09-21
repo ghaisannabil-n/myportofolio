@@ -1,4 +1,4 @@
-from django.forms import ModelForm, TextInput, Textarea, URLInput, DateInput
+from django.forms import ModelForm, TextInput, Textarea, URLInput, IntegerField
 
 from main.models import Project
 from main.models import Experience
@@ -98,12 +98,12 @@ class ExperienceForm(ModelForm):
                     "placeholder": "",
                 }
             ),
-            "started_at": DateInput(
+            "started_at": IntegerField(
                 attrs={
                     "placeholder": "",
                 }
             ),
-            "ended_at": DateInput(
+            "ended_at": IntegerField(
                 attrs={
                     "placeholder": "",
                 }

@@ -7,6 +7,7 @@ from main.models import Experience
 from main.models import Education
 from main.forms import ProjectForm
 from main.models import Project
+from main.forms import ExperienceForm
 
 def show_main(request):
     context = {
@@ -60,7 +61,7 @@ def create_project(request):
     return render(request, "projects_form.html", context)
 
 def create_experience(request):
-    form = ProjectForm(request.POST or None)
+    form = ExperienceForm(request.POST or None)
 
     if request.method == "POST" and form.is_valid():
         form.save()

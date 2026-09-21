@@ -81,7 +81,7 @@ def get_experience_json(request):
         experience = experience.filter(title_icontains = title_)
 
     experience_json = serializers.serialize("json", experience)
-    return HttpResponse(experience_json, contect_type="application/json")
+    return HttpResponse(experience_json, content_type="application/json")
 
 def delete_experience(request, experience_id):
     experience = get_object_or_404(Project, ex=experience_id)

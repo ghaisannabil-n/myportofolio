@@ -58,14 +58,20 @@ class ExperienceForm(ModelForm):
         fields = [
             "title",
             "description",
-            "year",
-            "experience_image",
+            "category",
+            "thumbnail",
+            "started_at",
+            "ended_at",
+            "experience_img",
         ]
 
         labels = {
             "title": "Name of Experience",
             "description": "Description of Experience",
-            "year": "Year",
+            "category": "Category",
+            "thumbnail": "Thumbnail",
+            "started_at": "Tahun Awal",
+            "ended_at": "Tahun Akhir",
             "experience_image": "URL Experience",
         }
 

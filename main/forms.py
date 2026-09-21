@@ -1,4 +1,4 @@
-from django.forms import ModelForm, TextInput, Textarea, URLInput
+from django.forms import ModelForm, TextInput, Textarea, URLInput, DateInput
 
 from main.models import Project
 from main.models import Experience
@@ -82,17 +82,27 @@ class ExperienceForm(ModelForm):
                     "rows": 3,
                 }
             ),
-            "tech_stack": TextInput(
+            "category": TextInput(
                 attrs={
                     "placeholder": "",
                 }
             ),
-            "project_url": URLInput(
+            "thumbnail": URLInput(
                 attrs={
                     "placeholder": "",
                 }
             ),
-            "project_image_url": URLInput(
+            "started_at": DateInput(
+                attrs={
+                    "placeholder": "",
+                }
+            ),
+            "ended_at": DateInput(
+                attrs={
+                    "placeholder": "",
+                }
+            ),
+            "experience_img": URLInput(
                 attrs={
                     "placeholder": "",
                 }

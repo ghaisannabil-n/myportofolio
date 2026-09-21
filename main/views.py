@@ -21,9 +21,20 @@ def show_main(request):
 
 
 def show_experience(request):
+    json_response = get_experience_json(request)
+
+    experience = serializers.deserialize(
+        "json",
+        json_response.content.decode("utf-8"),
+    )
+
+    experience = [experience.object for experience in experience]
+    title_ = request.GET.get("title", "").strip()
+
     context = {
         "name": "Nabil",
-        "experience_list": Experience.objects.all(),
+        "experience_list": experience,
+        "title_": title_,
     }
     return render(request, "experience.html", context)
 
@@ -48,6 +59,40 @@ def create_project(request):
     }
     return render(request, "projects_form.html", context)
 
+def create_experience(request):
+    form = ProjectForm(request.POST or None)
+
+    if request.method == "POST" and form.is_valid():
+        form.save()
+        messages.success(request, "Experience berhasil ditambahkan!")
+        return redirect("main:show_experience")
+    
+    context = {
+        "name" : "Nabil",
+        "form" : form,
+    }
+    return render(request, "experience_form.html", context)
+
+def get_experience_json(request):
+    title_ = request.GET.get("title", "").strip()
+    experience = Experience.objects.all()
+
+    if title_:
+        experience = experience.filter(title_icontains = title_)
+
+    experience_json = serializers.serialize("json", experience)
+    return HttpResponse(experience_json, contect_type="application/json")
+
+def delete_experience(request, experience_id):
+    experience = get_object_or_404(Project, ex=experience_id)
+
+    if request.method == "POST":
+        experience.delete()
+        messages.success(request, "Project Berhasil Dihapus!")
+        return redirect("main:show_experience")
+    
+    return redirect("main:show_experience")
+    
 def show_projects(request):
     json_response = get_projects_json(request)
 
@@ -59,7 +104,7 @@ def show_projects(request):
     title_query = request.GET.get("title", "").strip()
 
     context = {
-        "name": "Burhan",
+        "name": "Nabil",
         "project_list": projects,
         "title_query": title_query,
     }
@@ -84,4 +129,6 @@ def delete_project(request, project_id):
         return redirect("main:show_projects")
 
     return redirect("main:show_projects")
+
 # Create your views here.
+

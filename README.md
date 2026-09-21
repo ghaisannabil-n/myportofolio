@@ -25,4 +25,14 @@ migrate ==> mengaplikasikan file migration ke sebuah database
 dengan contoh saat mengisi bagian models sebelumnya (karena menambah education), ketika menjalankan makemigrations django akan mengupdate bagian education dan
 membuat file migration yang baru. Dan ketika menjalankan migrate file migration tersebut akan diterapkan pada database.
 
+
+## TUGAS 3 ##
+1. Dengan menggunakan modelform, proses pembuatan UI akan efisien daripada menulis langsung pada file html secara manual. Django dapat membuat struktur forms langsung terhubung ke models, dan dengan menggunakan tag {% csrf_token %} setiap distribution data di django, memiliki pertahanan dari serangan web. Tanpa adanya token csrf ini, akan memungkinkan terjadi penyerangan terhadap web tersebut.
+
+2. JSON lebih akurat dibandingkan XML karena json memiliki payload lebih kecil, sehingga penggunaannya akan jauh lebih ringan dan lebih cepat serta datanya akan jauh lebih ringkas dan readable.
+
+3. Alur pengembalian data, saat user mengakses URL, Django akan mendistribusi ke views yang sesuai dengan request. Views disini berperan sebagai logic application untuk memproses data dan menentukan respon apa yang di-inginkan(sesuai dengan request). Lalu views akan mengarah kepada models untuk mengumpulkan data yang melewati serialization dan ditaruh dalam bentuk HttpResponse. 
+
+Membutuhkan serialization untuk membaca objek python menjadi format JSON sehingga data data yang dipindah sebelumnya dapat dibaca dengan baik.
+
 declare ai :https://claude.ai/chat/21511b8d-b675-4034-890f-4f65eab71aa6

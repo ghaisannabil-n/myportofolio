@@ -20,25 +20,6 @@ def show_main(request):
     }
     return render(request, "index.html", context)
 
-
-def show_experience(request):
-    json_response = get_experience_json(request)
-
-    experience = serializers.deserialize(
-        "json",
-        json_response.content.decode("utf-8"),
-    )
-
-    experience = [experience.object for experience in experience]
-    title_ = request.GET.get("title", "").strip()
-
-    context = {
-        "name": "Nabil",
-        "experience_list": experience,
-        "title_": title_,
-    }
-    return render(request, "experience.html", context)
-
 def show_education(request):
     context = {
         "name": "Nabil",
@@ -85,11 +66,11 @@ def get_experience_json(request):
     return HttpResponse(experience_json, content_type="application/json")
 
 def delete_experience(request, experience_id):
-    experience = get_object_or_404(Project, ex=experience_id)
+    experience = get_object_or_404(Experience, pk=experience_id)
 
     if request.method == "POST":
         experience.delete()
-        messages.success(request, "Project Berhasil Dihapus!")
+        messages.success(request, "Experience Berhasil Dihapus!")
         return redirect("main:show_experience")
     
     return redirect("main:show_experience")
@@ -110,6 +91,24 @@ def show_projects(request):
         "title_query": title_query,
     }
     return render(request, "project.html", context)
+
+def show_experience(request):
+    json_response = get_experience_json(request)
+
+    experience = serializers.deserialize(
+        "json",
+        json_response.content.decode("utf-8"),
+    )
+
+    experience = [experience.object for experience in experience]
+    title_query= request.GET.get("title", "").strip()
+
+    context = {
+        "name": "Nabil",
+        "experience_list": experience,
+        "title_query": title_query,
+    }
+    return render(request, "experience.html", context)
 
 def get_projects_json(request):
     title_query = request.GET.get("title", "").strip()

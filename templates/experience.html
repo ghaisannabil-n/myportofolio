@@ -9,9 +9,11 @@
                 <p class="section-kicker">Perjalanan saya sejauh ini</p>
                 <div class="project-header">
                     <h1 style="color: var(--text_primary);">Experience</h1>
+                {% if user.is_superuser %}
                     <a href="{% url 'main:create_experience' %}" 
                         class="button project-add-button">
                         <span aria-hidden="true">+</span>Tambah Experience</a>
+                {% endif %}
                 </div>
                 <form method="get" 
                       action="{% url 'main:show_experience' %}" 
@@ -59,8 +61,9 @@
                                     {% if experience.thumbnail %}
                                         <a href="{{ experience.thumbnail }}" class="button" target="_blank">Lihat Detail</a>
                                     {% endif %}
-
+                                {% if user.is_superuser %}
                                     {% include "components/experience_delete_modal.html" with experience=experience %}
+                                {% endif %}
                                 </div>
                             </div>
                         </article>

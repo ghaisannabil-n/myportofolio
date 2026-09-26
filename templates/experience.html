@@ -8,7 +8,7 @@
             <div class="container">
                 <p class="section-kicker">Perjalanan saya sejauh ini</p>
                 <div class="project-header">
-                    <h1>Experience</h1>
+                    <h1 style="color: var(--text_primary);">Experience</h1>
                     <a href="{% url 'main:create_experience' %}" 
                         class="button project-add-button">
                         <span aria-hidden="true">+</span>Tambah Experience</a>
@@ -26,14 +26,14 @@
                 </form>
                 <div class="     project-grid">
                     {% for experience in experience_list %}
-                        <article class="experience-card">
+                        <article class="experience-card" style="background-color: var(--p3-panel); border: 1px solid var(--p3-cyan);">
                             {% if experience.experience_img %}
                                 <img src="{{ experience.experience_img }}"
                                     alt="Gambar {{ experience.title }}"
                                     class="project-image">
                             {% endif %}
-                            <h2>{{ experience.title }}</h2>
-                            <span class="experience-category">{{ experience.get_category_display }}</span>
+                            <h2 style="color: var(--p3-cyan);">{{ experience.title }}</h2>
+                            <span class="experience-category" style="color: var(--text_muted_Abt);">{{ experience.get_category_display }}</span>
                             
                             <p class="experience-date">
                                 <strong>Durasi:</strong> 
@@ -52,7 +52,7 @@
                                 {% endif %}
                             </p>
                             
-                            <p class="experience-description">{{ experience.description }}</p>
+                            <p class="experience-description" style="color: var(--text_primary);">{{ experience.description }}</p>
 
                             <div class="project-card-actions">
                                 <div class="project-actions">

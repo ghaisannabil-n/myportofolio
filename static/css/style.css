@@ -79,7 +79,9 @@ h1, .brand {
 
 /* Header with Flexbox */
 .site-header {
-    background-color: var(#3d6bf2);
+    background-color: var(--p3-panel);
+    border-bottom: 2px solid var(--p3-cyan);
+    box-shadow: 0 4px 15px var(--p3-glow);
 }
 
 .site-header .container {
@@ -92,24 +94,30 @@ h1, .brand {
 .brand {
     font-size: 1.3rem;
     font-weight: 700;
-    color: var(--ink);
+    color: var(--p3-cyan);
     text-decoration: none;
+    text-transform: uppercase;
+    letter-spacing: 2px;
 }
 
 .site-header nav {
     display: flex;
     gap: 2rem;
-    justify-content: center;
     align-items: center;
-    display: flex;
-    flex-direction: row;
 }
 
 .site-header nav a {
-    color: var(--ink);
+    color: var(--text_primary);
     text-decoration: none;
     font-size: 0.95rem;
-    
+    font-family: "Space Grotesk", sans-serif;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    transition: color 0.2s ease;   
+}
+
+.site-header nav a:hover {
+    color: var(--p3-cyan);
 }
 
 /* Section Hero with CSS Grid */
@@ -580,9 +588,9 @@ h1, .brand {
 
 /* Footer dan Responsive */
 .site-footer {
-    background-color: #163a7d;
-    color: #ffffff;
-    border-top: 2px solid #3d6bf2;
+    background-color: var(--p3-panel);
+    color: var(--text_muted_Abt);
+    border-top: 2px solid var(--p3-cyan);
     text-align: center;
     padding: 1.5rem 0;
 }
@@ -855,6 +863,7 @@ h1, .brand {
 
 .project-header h1 {
     margin-bottom: 0;
+    color: var(--text_primary);
 }
 
 .project-add-button {
@@ -1031,6 +1040,107 @@ h1, .brand {
         width: 100%;
         text-align: center;
     }
+}
+
+/* Education */
+
+.education-page .container {
+    padding-top: 4rem;
+    padding-bottom: 4rem;
+}
+
+.education-heading {
+    margin-bottom: 2.5rem;
+}
+
+.education-heading h1 {
+    color: var(--text_primary);
+    font-size: 2.5rem;
+    margin-bottom: 0.5rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+.education-heading p {
+    color: var(--p3-cyan);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-size: 0.85rem;
+}
+
+.education-timeline {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+/* Desain Kartu Education */
+.education-card {
+    background-color: var(--p3-panel);
+    border: 2px solid var(--blue_electric);
+    border-radius: 6px;
+    padding: 2rem;
+    box-shadow: 8px 8px 0px var(--blue_electric);
+    position: relative;
+    overflow: hidden;
+}
+
+/* Efek bercak cahaya di pojok kanan kartu */
+.education-card::before {
+    content: "";
+    position: absolute;
+    right: -20px;
+    top: -20px;
+    width: 100px;
+    height: 100px;
+    background: radial-gradient(circle, rgba(111, 168, 255, 0.1) 0%, transparent 70%);
+    border-radius: 50%;
+}
+
+.education-card__year {
+    color: var(--blue_glow);
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 1.1rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+    border-bottom: 1px solid var(--border_soft);
+    padding-bottom: 0.5rem;
+    display: inline-block;
+}
+
+.education-card_degree {
+    color: var(--text_primary);
+    font-size: 1.5rem;
+    margin-bottom: 0.25rem;
+}
+
+.education-card_institution {
+    color: var(--p3-cyan);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-size: 0.9rem;
+    margin-bottom: 1rem;
+}
+
+.education-card_desc {
+    color: var(--text_muted_Abt);
+    line-height: 1.6;
+    font-size: 0.95rem;
+}
+
+/* Keadaan Kosong (Empty State) */
+.education-empty {
+    border: 1px dashed var(--p3-cyan);
+    padding: 2rem;
+    text-align: center;
+    border-radius: 6px;
+}
+
+.education-empty p {
+    color: var(--text_primary);
+    font-style: italic;
 }
 
 /* Experience */

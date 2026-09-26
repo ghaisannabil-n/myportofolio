@@ -37,7 +37,7 @@ def show_education(request):
 @login_required(login_url="/login/")
 def create_project(request):
     if not request.user.is_superuser:
-        raise PermissionDenied
+        raise PermissionDenied("Akses ditolak: Developer Only")
      
     form = ProjectForm(request.POST or None)
 
@@ -55,7 +55,7 @@ def create_project(request):
 @login_required(login_url="/login/")
 def create_experience(request):
     if not request.user.is_superuser:
-        raise PermissionDenied
+        raise PermissionDenied("Akses ditolak: Developer Only")
     
     form = ExperienceForm(request.POST or None)
 
@@ -83,7 +83,7 @@ def get_experience_json(request):
 @login_required(login_url="/login/")
 def delete_experience(request, experience_id):
     if not request.user.is_superuser:
-        raise PermissionDenied
+        raise PermissionDenied("Akses ditolak: Developer Only")
     
     experience = get_object_or_404(Experience, pk=experience_id)
 
@@ -144,7 +144,7 @@ def get_projects_json(request):
 @login_required(login_url="/login/")
 def delete_project(request, project_id):
     if not request.user.is_superuser:
-        raise PermissionDenied
+        raise PermissionDenied("Akses ditolak: Developer Only")
     
     project = get_object_or_404(Project, pk=project_id)
 
@@ -154,6 +154,23 @@ def delete_project(request, project_id):
         return redirect("main:show_projects")
 
     return redirect("main:show_projects")
+
+@login_required(login_url="/login/")
+def edit_project(request, project_id):
+    is_editor = request.user.groups.filter(name="Editor").exists()
+    if not (request.user.is_superuser or is_editor):
+        raise PermissionDenied("Akses ditolak: Developer Only")
+    
+    project = get_object_or_404(Project, pk=project_id)
+    form = ProjectForm(request.POST or None, instance=project)
+
+    if request.method == "POST" and form.is_valid():
+        form.save()
+        messages.success(request, "Proyek berhasil diubah!")
+        return redirect("main:show_projects")
+
+    context = {"name": "Ghaisan Nabil", "form": form}
+    return render(request, "projects_form.html", context)
 
 def register(request):
     form = UserCreationForm(request.POST or None)

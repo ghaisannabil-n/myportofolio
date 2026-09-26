@@ -59,12 +59,8 @@
                                     {% if experience.thumbnail %}
                                         <a href="{{ experience.thumbnail }}" class="button" target="_blank">Lihat Detail</a>
                                     {% endif %}
-    
-                                    <a href="{% url 'main:delete_experience' experience.id %}" 
-                                        class="button button-danger" 
-                                    onclick="return confirm('Apakah Anda yakin ingin menghapus experience {{ experience.title }}?');">
-                                        Hapus Experience
-                                    </a>
+
+                                    {% include "components/experience_delete_modal.html" with experience=experience %}
                                 </div>
                             </div>
                         </article>

@@ -53,6 +53,34 @@
     
             </div>
         </section>
+
+        {% if request.user.is_superuser %}
+        <div id="add-project-modal" class="project-form-modal" popover="auto">
+            <button type="button" class="project-form-modal__backdrop" popovertarget="add-project-modal" popovertargetaction="hide"></button>
+            <div class="project-form-modal__content">
+                <button type="button" class="project-form-modal__close" popovertarget="add-project-modal" popovertargetaction="hide">&times;</button>
+                <h2>Tambah Proyek</h2>
+                <form id="projectForm" class="project-form">
+                    <div class="form-group">
+                        <label>Judul Proyek</label>
+                        <input type="text" name="title" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Deskripsi</label>
+                        <textarea name="description" rows="3" required></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>Tech Stack</label>
+                        <input type="text" name="tech_stack">
+                    </div>
+                    <div class="project-form-modal__actions">
+                        <button type="button" class="button button-secondary" popovertarget="add-project-modal" popovertargetaction="hide">Batal</button>
+                        <button type="submit" class="button">Simpan</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        {% endif %}
     </main>
 
     {% if user.is_superuser %}

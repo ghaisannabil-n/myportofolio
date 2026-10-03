@@ -73,14 +73,24 @@ def create_experience(request):
     return render(request, "experience_form.html", context)
 
 def get_experience_json(request):
-    title_ = request.GET.get("title", "").strip()
-    experience = Experience.objects.all()
+    title_query = request.GET.get("title", "").strip()
+    experiences = Experience.objects.all()
 
-    if title_:
-        experience = experience.filter(title_icontains = title_)
+    if title_query:
+        experiences = experiences.filter(title__icontains=title_query)
 
-    experience_json = serializers.serialize("json", experience)
-    return HttpResponse(experience_json, content_type="application/json")
+    data = []
+    for exp in experiences:
+        data.append({
+            "id": str(exp.id),
+            "title": exp.title,
+            "description": exp.description,
+            "category": exp.get_category_display(),
+            "thumbnail": exp.thumbnail,
+            "experience_img": exp.experience_img,
+            "is_ongoing": exp.is_ongoing,
+        })
+    return JsonResponse(data, safe=False)
 
 @login_required(login_url="/login/")
 def delete_experience(request, experience_id):
@@ -123,19 +133,7 @@ def show_experience(request):
         "title_query": title_query,
     }
     return render(request, "experience.html", context)
-
-def get_projects_json(request):
-    title_query = request.GET.get("title", "").strip()
-    projects = Project.objects.all()
-
-    if title_query:
-        projects = projects.filter(title__icontains=title_query)
-
-    projects_json = serializers.serialize(
-        "json", projects, use_natural_foreign_keys=True 
-    )
-    return HttpResponse(projects_json, content_type="application/json")
-
+    
 @login_required(login_url="/login/")
 def delete_project(request, project_id):
     if not request.user.is_superuser:
@@ -263,5 +261,34 @@ def create_project_ajax(request):
 
     return JsonResponse({"errors": form.errors.get_json_data()}, status=400)
 
+@login_required(login_url="/login/")
+def add_project_ajax(request):
+    if not request.user.is_superuser:
+        return JsonResponse({"status": "error", "message": "Akses ditolak: Khusus untuk developer"}, status=403)
+    
+    if request.method == "POST":
+        form = ProjectForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return JsonResponse({"status": "success", "message": "Proyek berhasil ditambahkan"}, status=201)
+        else:
+            return JsonResponse({"status": "error", "message": form.errors}, status=400)
+    
+    return JsonResponse({"status": "error", "message": "Tidak diizinkan untuk publish"}, status=405)
+
+@login_required(login_url="/login/")
+def add_experience_ajax(request):
+    if not request.user.is_superuser:
+        return JsonResponse({"status": "error", "message": "Akses ditolak: Hanya Pemilik yang berhak."}, status=403)
+    
+    if request.method == "POST":
+        form = ExperienceForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return JsonResponse({"status": "success", "message": "Experience berhasil ditambahkan!"}, status=201)
+        else:
+            return JsonResponse({"status": "error", "message": form.errors}, status=400)
+    
+    return JsonResponse({"status": "error", "message": "Metode tidak diizinkan"}, status=405)
 # Create your views here.
 

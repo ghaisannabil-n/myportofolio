@@ -36,3 +36,12 @@ membuat file migration yang baru. Dan ketika menjalankan migrate file migration 
 Membutuhkan serialization untuk membaca objek python menjadi format JSON sehingga data data yang dipindah sebelumnya dapat dibaca dengan baik.
 
 declare ai :https://claude.ai/chat/21511b8d-b675-4034-890f-4f65eab71aa6
+
+## TUGAS 5 ##
+1. Debouncing digunakan untuk menunda suatu eksekusi terhadap pada sebuah fungsi, sehingga user akan berhenti melakukan interact selama waktu tertentu. Debouncing ini sangat penting untuk fitur searching langsung, dimana AJAX akan melakukan reaksi tiap user mengetik pada saat melakukan pencarian. Dimana akan menerima apa yang diminta (search) akan loading sehingga AJAX akan mengirim permintaan user ke dalam server.
+
+2. await berfungsi sebagai command untuk javascript suapaya dapat menghentikan sementara pengeksekusian baris kode setelahnya yang berada di dalam fungsi fetch(). Jika tidak menggunakan await, outcome yang dihasilkan tidak berisi data yang diinginkan. Pada saat baris kode setelahnya membaca baris tersebut, akan outcome eror.
+
+3. Serangan XSS merupakan sebuah serangan keamanan yang memengaruhi sebuah database, dimana penyerang akan memasukkan sebuah script yang dimana, pada saat script tersebut terbaca pada sebuah situs, akan me-compile script tersebut yang mengakibatkan pencurian data user.
+
+Data yang ditampilkan melalui AJAX/JavaScript lebih rentan karena ketika data diambil secara manual, JavaScript yang menjadi "frontend" menjadi tanggung jawabnya dan diubah menjadi HTML, dan perlindungan yang secara otomatis diberikan oleh django akan hilang. Dan django sendiri memiliki sistem perlindungan sendiri yang dinamakan Django Template Language, sehingga tiap teks yang diubah menjadi HTML akan melindungi serangan XSS tersebut.

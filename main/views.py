@@ -117,19 +117,10 @@ def show_projects(request):
     return render(request, "project.html", context)
 
 def show_experience(request):
-    json_response = get_experience_json(request)
-
-    experience = serializers.deserialize(
-        "json",
-        json_response.content.decode("utf-8"),
-    )
-
-    experience = [experience.object for experience in experience]
-    title_query= request.GET.get("title", "").strip()
+    title_query = request.GET.get("title", "").strip()
 
     context = {
         "name": "Nabil",
-        "experience_list": experience,
         "title_query": title_query,
     }
     return render(request, "experience.html", context)

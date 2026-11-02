@@ -34,6 +34,9 @@
     --p3-panel: #0d1830;
     --p3-cyan: #3d6bf2;
     --p3-glow: rgba(111, 168, 255,0.15);
+
+    --text-muted: #6b6459;
+    --bg: #060b1a;
 }
 
 #profile {
@@ -373,13 +376,13 @@ h1, .brand {
     letter-spacing: 2px;
 }
 
-.card-title .skill_list {
+.card-skills .skill_list {
     display: flex;
     flex-direction: column;
     gap: 15px;
 }
 
-.card-title .skill {
+.card-skills .skill {
     border: none;
     background-color: transparent;
     padding: 0;
@@ -905,7 +908,9 @@ h1, .brand {
 }
 
 .project-grid {
+    display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1rem;
 }
 
 .project-grid .experience-card {
@@ -1583,7 +1588,7 @@ h1, .brand {
 @media (max-width: 600px) {
     .section_inner-split,
     .section_inner-reserve,
-    .section_innber-abt {
+    .section_inner-abt {
         grid-template-columns: 1fr;
         grid-template-areas: 
             "identity"

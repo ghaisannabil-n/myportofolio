@@ -1,4 +1,4 @@
-let toastTimer;
+var toastTimer;
 
 function showToast(title, message, type = 'normal', duration = 3000) {
   const toastComponent = document.getElementById('toast-component');

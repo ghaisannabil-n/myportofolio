@@ -8,6 +8,7 @@ from django.contrib.auth.decorators import login_required
 from django.core.exceptions import PermissionDenied  
 from django.http import JsonResponse      
 from django.views.decorators.http import require_POST
+from django.views.decorators.csrf import ensure_csrf_cookie
 
 from main.models import Experience
 from main.models import Education
@@ -116,12 +117,16 @@ def show_projects(request):
     }
     return render(request, "project.html", context)
 
+@ensure_csrf_cookie
 def show_experience(request):
     title_query = request.GET.get("title", "").strip()
+    is_editor = (request.user.is_authenthicated and request.user.groups.filter(name="Editer").exists())
 
     context = {
         "name": "Nabil",
         "title_query": title_query,
+        "form": ExperienceForm(),
+        "is_editor":is_editor,
     }
     return render(request, "experience.html", context)
     

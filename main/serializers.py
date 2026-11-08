@@ -44,6 +44,8 @@ class ProjectSerializer(serializers.ModelSerializer):
         
 
 class ExperienceSerializer(serializers.ModelSerializer):
+    category_display = serializers.CharField(source="get_category_display", read_only=True)
+    is_ongoing = serializers.BooleanField(read_only=True)
     star_count = serializers.SerializerMethodField()
     is_starred = serializers.SerializerMethodField()
     starred_by_names = serializers.SerializerMethodField()
@@ -51,43 +53,28 @@ class ExperienceSerializer(serializers.ModelSerializer):
     class Meta:
         model = Experience
         fields = [
-            "id", "title", "description", "category",
-            "thumbnail", "started_at", 
-            "ended_at", "experience_img", "starred_by",
+            "id", "title", "description", "category", "category_display",
+            "thumbnail", "is_ongoing", "star_count", "is_starred",
+            "experience_img", "starred_by_names",
         ]
-        read_only_fields = ["id"]
+        read_only_fields = ["id", "category_display", "is_ongoing"]
 
     def validate_title(self, value):
         cleaned = strip_tags(value).strip()
         if not cleaned:
-            raise serializers.ValidationError("title can't be empty")
+            raise serializers.ValidationError("Title can't be empty")
         return cleaned
     
     def validate_description(self, value):
         cleaned = strip_tags(value).strip()
         if not cleaned:
-            raise serializers.ValidationError("description can't be empty")
+            raise serializers.ValidationError("Description can't be empty")
         return cleaned
 
     def validate_category(self, value):
-        cleaned = strip_tags(value).strip()
-        if not cleaned:
-            raise serializers.ValidationError("category can't be empty")
-        return cleaned
+        return strip_tags(value).strip()
 
     def validate_thumbnail(self, value):
-        return strip_tags(value).strip()
-    
-    def validate_started_at(self, value):
-        return strip_tags(value).strip()
-    
-    def validate_ended_at(self, value):
-        return strip_tags(value).strip()
-    
-    def validate_experience_img(self, value):
-        return strip_tags(value).strip()
-    
-    def validate_started_at(self, value):
         return strip_tags(value).strip()
     
     def get_star_count(self, obj):

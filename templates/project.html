@@ -60,7 +60,7 @@
             <div class="project-form-modal__content">
                 <button type="button" class="project-form-modal__close" popovertarget="add-project-modal" popovertargetaction="hide">&times;</button>
                 <h2>Tambah Proyek</h2>
-                <form id="projectForm" class="project-form">
+                <form id="project-form" class="project-form">
                     <div class="form-group">
                         <label>Judul Proyek</label>
                         <input type="text" name="title" required>
@@ -73,6 +73,14 @@
                         <label>Tech Stack</label>
                         <input type="text" name="tech_stack">
                     </div>
+                    <div class="form-group">
+                        <label>URL Proyek (Opsional)</label>
+                        <input type="url" name="project_url" placeholder="https://example.com">
+                    </div>
+                    <div class="form-group">
+                        <label>URL Gambar Proyek (Opsional)</label>
+                        <input type="url" name="project_image_url" placeholder="https://example.com/image.png">
+                    </div>
                     <div class="project-form-modal__actions">
                         <button type="button" class="button button-secondary" popovertarget="add-project-modal" popovertargetaction="hide">Batal</button>
                         <button type="submit" class="button">Simpan</button>
@@ -80,12 +88,42 @@
                 </form>
             </div>
         </div>
+
+        <div id="edit-project-modal" class="project-form-modal" popover="auto">
+            <button type="button" class="project-form-modal__backdrop" popovertarget="edit-project-modal" popovertargetaction="hide"></button>
+            <div class="project-form-modal__content">
+                <button type="button" class="project-form-modal__close" popovertarget="edit-project-modal" popovertargetaction="hide">&times;</button>
+                <h2>Ubah Proyek</h2>
+                <form id="project-edit-form" class="project-form">
+                    <div class="form-group">
+                        <label>Judul Proyek</label>
+                        <input type="text" name="title" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Deskripsi</label>
+                        <textarea name="description" rows="3" required></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>Tech Stack</label>
+                        <input type="text" name="tech_stack">
+                    </div>
+                    <div class="form-group">
+                        <label>URL Proyek (Opsional)</label>
+                        <input type="url" name="project_url" placeholder="https://example.com">
+                    </div>
+                    <div class="form-group">
+                        <label>URL Gambar Proyek (Opsional)</label>
+                        <input type="url" name="project_image_url" placeholder="https://example.com/image.png">
+                    </div>
+                    <div class="project-form-modal__actions">
+                        <button type="button" class="button button-secondary" popovertarget="edit-project-modal" popovertargetaction="hide">Batal</button>
+                        <button type="submit" class="button">Simpan Perubahan</button>
+                    </div>
+                </form>
+            </div>
+        </div>
         {% endif %}
     </main>
-
-    {% if user.is_superuser %}
-        {% include "components/project_form_modal.html" %}
-    {% endif %}
 
     {% csrf_token %}
     <script>
@@ -102,8 +140,11 @@
     const searchForm = document.getElementById('project-search-form');
     const searchInput = document.getElementById('search-input');
     const projectForm = document.getElementById('project-form');
+    const projectEditForm = document.getElementById('project-edit-form');
+
     let projectsAbortController;
     let searchDebounceTimer;
+    const projectsCache = new Map();
 
     function getCookie(name) {
         const prefix = `${name}=`;
@@ -131,6 +172,7 @@
     }
 
     function buildProjectCardElement(project) {
+        projectsCache.set(String(project.id), project);
         const article = document.createElement('article');
         article.className = 'experience-card';
         const image = project.project_image_url
@@ -143,6 +185,8 @@
                 title="${escapeHtml(project.starred_by_names)}">
                 ${project.is_starred ? 'Unstar' : 'Star'} (${project.star_count})</button>`
             : `<a href="{% url 'main:login' %}" class="button">Login to star (${project.star_count})</a>`;
+        const edit = IS_SUPERUSER
+            ? `<button type="button" class="button button-secondary" data-action="edit" data-id="${escapeHtml(project.id)}">Edit</button>` : '';
         const remove = IS_SUPERUSER
             ? `<button type="button" class="button button-danger" data-action="delete"
                 data-id="${escapeHtml(project.id)}">Delete</button>` : '';
@@ -150,11 +194,12 @@
             <span class="experience-category">${escapeHtml(project.tech_stack)}</span>
             <p class="experience-description">${escapeHtml(project.description)}</p>
             <div class="project-card-actions"><div class="project-actions">
-            ${link}${star}${remove}</div></div>`;
+            ${link}${star}${edit}${remove}</div></div>`;
         return article;
     }
 
     async function fetchProjects(searchQuery = '') {
+        projectsCache.clear();
         if (projectsAbortController) projectsAbortController.abort();
         projectsAbortController = new AbortController();
         try {
@@ -218,12 +263,49 @@
         }
     }
 
+    async function editProject(event) {
+        event.preventDefault();
+        const button = projectEditForm.querySelector('button[type="submit"]');
+        const projectId = projectEditForm.dataset.editId;
+        button.disabled = true;
+        try {
+            const fields = new FormData(projectEditForm);
+            const payload = Object.fromEntries([
+                'title', 'description', 'tech_stack', 'project_url', 'project_image_url',
+            ].map(name => [name, fields.get(name) || '']));
+            await writeProject(projectEndpoint(DETAIL_PROJECT_ENDPOINT, projectId), 'PATCH', payload);
+            document.getElementById('edit-project-modal').hidePopover();
+            showToast('Success', 'Project updated.', 'success');
+            await fetchProjects(searchInput.value.trim());
+        } catch (error) {
+            showToast('Could not update project', error.message, 'error');
+        } finally {
+            button.disabled = false;
+        }
+    }
+
     if (projectForm) projectForm.addEventListener('submit', addProject);
+    if (projectEditForm) projectEditForm.addEventListener('submit', editProject);
 
     gridContainer.addEventListener('click', async function(event) {
         const button = event.target.closest('button[data-action]');
         if (!button || button.disabled) return;
         const action = button.dataset.action;
+        const id = button.dataset.id;
+
+        if (action === 'edit') {
+            const item = projectsCache.get(String(id));
+            if (!item || !projectEditForm) return;
+            projectEditForm.dataset.editId = id;
+            projectEditForm.elements['title'].value = item.title || '';
+            projectEditForm.elements['description'].value = item.description || '';
+            projectEditForm.elements['tech_stack'].value = item.tech_stack || '';
+            projectEditForm.elements['project_url'].value = item.project_url || '';
+            projectEditForm.elements['project_image_url'].value = item.project_image_url || '';
+            document.getElementById('edit-project-modal')?.showPopover();
+            return;
+        }
+
         if (action === 'delete' && !window.confirm('Delete this project?')) return;
         button.disabled = true;
         try {

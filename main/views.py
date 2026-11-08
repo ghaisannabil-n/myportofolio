@@ -120,7 +120,7 @@ def show_projects(request):
 @ensure_csrf_cookie
 def show_experience(request):
     title_query = request.GET.get("title", "").strip()
-    is_editor = (request.user.is_authenthicated and request.user.groups.filter(name="Editer").exists())
+    is_editor = (request.user.is_authenticated and request.user.groups.filter(name="Editer").exists())
 
     context = {
         "name": "Nabil",

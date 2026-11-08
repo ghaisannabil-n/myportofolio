@@ -58,7 +58,7 @@
         <div class="project-form-modal__content">
             <button type="button" class="project-form-modal__close" popovertarget="add-experience-modal" popovertargetaction="hide">&times;</button>
             <h2>Tambah Experience</h2>
-            <form id="experienceForm" class="project-form">
+            <form id="experience-form" class="project-form">
                 <div class="form-group">
                     <label>Judul Experience</label>
                     <input type="text" name="title" required>
@@ -81,13 +81,13 @@
     {% endif %}
 
     <!-- Edit Experience Patch (Only Editor & Superuser)-->
-    {% if request.user.is_superuser %}
+    {% if request.user.is_superuser or is_editor %}
     <div id="edit-experience-modal" class="project-form-modal" popover="auto">
-        <button type="button" class="project-form-modal__backdrop" popovertarget="add-experience-modal" popovertargetaction="hide"></button>
+        <button type="button" class="project-form-modal__backdrop" popovertarget="edit-experience-modal" popovertargetaction="hide"></button>
         <div class="project-form-modal__content">
-            <button type="button" class="project-form-modal__close" popovertarget="add-experience-modal" popovertargetaction="hide">&times;</button>
+            <button type="button" class="project-form-modal__close" popovertarget="edit-experience-modal" popovertargetaction="hide">&times;</button>
             <h2>Tambah Experience</h2>
-            <form id="experienceForm" class="project-form">
+            <form id="experience-edit-form" class="project-form">
                 <div class="form-group">
                     <label>Judul Experience</label>
                     <input type="text" name="title" required>
@@ -126,10 +126,10 @@
   const gridContainer = document.getElementById("grid");
   const searchForm = document.getElementById("experience-search-form");
   const searchInput = document.getElementById("search-input");
-  const addForm = document.getElementById("experience-form");
-  const editForm = document.getElementById("experience-edit-form");
+  const experienceForm = document.getElementById("experience-form");
+  const experienceEditForm = document.getElementById("experience-edit-form");
 
-  let exAbortController;
+  let experienceAbortController;
   let searchDebounceTimer;
   let currentItemsMap = new Map();
 
@@ -151,7 +151,7 @@
       .replaceAll("'", "&#39;");
   }
 
-  function exEndpoint(pattern, id) {
+  function experienceEndpoint(pattern, id) {
     return pattern.replace('00000000-0000-0000-0000-000000000000', id);
   }
 
@@ -241,8 +241,8 @@
 }
   
   async function fetchExperience(searchQuery = "") {
-    if (exAbortController) exAbortController.abort();
-    exAbortController = new AbortController();
+    if (experienceAbortController) experienceAbortController.abort();
+    experienceAbortController = new AbortController();
 
     try {
         displayPageSection({ showLoading: true });
@@ -251,7 +251,7 @@
         
         const response = await fetch(url, {
             headers: { Accept: "application/json" },
-            signal: exAbortController.signal,
+            signal: experienceAbortController.signal,
         });
         if (!response.ok) throw new Error(`HTTP ${response.status}`);
         
@@ -283,7 +283,7 @@
             experienceForm.reset();
             document.getElementById('add-experience-modal').hidePopover();
             showToast('Success', 'Experience berhasil ditambahkan.', 'success');
-            await fetchExperiences(searchInput.value.trim());
+            await fetchExperience(searchInput.value.trim());
         } catch (error) {
             showToast('Gagal menambah experience', error.message, 'error');
         } finally {
@@ -309,7 +309,7 @@
             );
             document.getElementById('edit-experience-modal').hidePopover();
             showToast('Success', 'Experience berhasil diperbarui.', 'success');
-            await fetchExperiences(searchInput.value.trim());
+            await fetchExperience(searchInput.value.trim());
         } catch (error) {
             showToast('Gagal mengubah experience', error.message, 'error');
         } finally {
@@ -347,13 +347,13 @@
     try {
       const pattern = action === "star" ? STAR_EXPERIENCE_ENDPOINT : DETAIL_EXPERIENCE_ENDPOINT;
       const method = action === "star" ? "POST" : "DELETE";
-      await writeEducation(eduEndpoint(pattern, id), method);
+      await writeExperience(experienceEndpoint(pattern, id), method);
       showToast(
         "Success",
         action === "star" ? "Star updated." : "Experience deleted.",
         "success"
       );
-      await fetchEducations(searchInput.value.trim());
+      await fetchExperience(searchInput.value.trim());
     } catch (error) {
       showToast("Request failed", error.message, "error");
     } finally {

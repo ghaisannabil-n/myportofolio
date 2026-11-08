@@ -33,17 +33,17 @@
 
                  <!-- Loading State -->
             <div id="loading" class="empty-state hide">
-                <p>Memuat projects...</p>
+                <p>Memuat experience...</p>
             </div>
 
             <!-- Error State -->
             <div id="error" class="empty-state hide">
-                <p>Gagal memuat data projects. Silakan coba lagi.</p>
+                <p>Gagal memuat data experience. Silakan coba lagi.</p>
             </div>
 
             <!-- Empty State -->
             <div id="empty" class="empty-state hide">
-                <p>Belum ada proyek yang ditambahkan atau ditemukan.</p>
+                <p>Belum ada experience yang ditambahkan atau ditemukan.</p>
             </div>
 
             <!-- Project Grid (Wadah Kosong untuk JS) -->
@@ -131,7 +131,7 @@
 
   let experienceAbortController;
   let searchDebounceTimer;
-  let currentItemsMap = new Map();
+  let experienceCache = new Map();
 
   function getCookie(name) {
     const prefix = `${name}=`;
@@ -247,7 +247,7 @@
     try {
         displayPageSection({ showLoading: true });
         const url = new URL(BASE_EXPERIENCE_ENDPOINT, window.location.origin);
-        if (searchQuery) url.searchParams.set("q", searchQuery);
+        if (searchQuery) url.searchParams.set("title", searchQuery);
         
         const response = await fetch(url, {
             headers: { Accept: "application/json" },

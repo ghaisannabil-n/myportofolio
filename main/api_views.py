@@ -19,7 +19,7 @@ from main.permissions import IsPortfolioOwnerOrEditorOrReadOnly
 def project_list(request):
     if request.method in ("GET", "HEAD"):
         projects = Project.objects.prefetch_related("starred_by").order_by("title", "id")
-        title = request.query_params.get("title", "").strip()
+        title = (request.query_params.get("title") or request.query_params.get("q") or "").strip()
         if title:
             projects = projects.filter(title__icontains=title)
         serializer = ProjectSerializer(

@@ -28,6 +28,10 @@ class Experience(models.Model):
     @property
     def is_ongoing(self):
         return self.ended_at is None 
+    
+    @property
+    def total_stars(self):
+        return self.starred_by.count()
 
 class Education(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)

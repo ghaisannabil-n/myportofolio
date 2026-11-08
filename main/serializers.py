@@ -1,7 +1,7 @@
 from django.utils.html import strip_tags
 from rest_framework import serializers
 
-from main.models import Project
+from main.models import Project, Experience
 
 
 class ProjectSerializer(serializers.ModelSerializer):
@@ -39,5 +39,65 @@ class ProjectSerializer(serializers.ModelSerializer):
             return False
         return request.user in obj.starred_by.all()
 
+    def get_starred_by_names(self, obj):
+        return ", ".join(user.username for user in obj.starred_by.all())\
+        
+
+class ExperienceSerializer(serializers.ModelSerializer):
+    star_count = serializers.SerializerMethodField()
+    is_starred = serializers.SerializerMethodField()
+    starred_by_names = serializers.SerializerMethodField()
+
+    class Meta:
+        model = Experience
+        fields = [
+            "id", "title", "description", "category",
+            "thumbnail", "started_at", 
+            "ended_at", "experience_img", "starred_by",
+        ]
+        read_only_fields = ["id"]
+
+    def validate_title(self, value):
+        cleaned = strip_tags(value).strip()
+        if not cleaned:
+            raise serializers.ValidationError("title can't be empty")
+        return cleaned
+    
+    def validate_description(self, value):
+        cleaned = strip_tags(value).strip()
+        if not cleaned:
+            raise serializers.ValidationError("description can't be empty")
+        return cleaned
+
+    def validate_category(self, value):
+        cleaned = strip_tags(value).strip()
+        if not cleaned:
+            raise serializers.ValidationError("category can't be empty")
+        return cleaned
+
+    def validate_thumbnail(self, value):
+        return strip_tags(value).strip()
+    
+    def validate_started_at(self, value):
+        return strip_tags(value).strip()
+    
+    def validate_ended_at(self, value):
+        return strip_tags(value).strip()
+    
+    def validate_experience_img(self, value):
+        return strip_tags(value).strip()
+    
+    def validate_started_at(self, value):
+        return strip_tags(value).strip()
+    
+    def get_star_count(self, obj):
+        return obj.starred_by.count()
+    
+    def get_is_starred(self, obj):
+        request = self.context.get("request")
+        if request is None or not request.user.is_authenticated:
+            return False
+        return request.user in obj.starred_by.all()
+    
     def get_starred_by_names(self, obj):
         return ", ".join(user.username for user in obj.starred_by.all())

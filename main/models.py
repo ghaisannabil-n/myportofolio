@@ -21,6 +21,7 @@ class Experience(models.Model):
     started_at = models.DateTimeField(blank=True, null=True)    
     ended_at = models.DateTimeField(blank=True, null=True)
     experience_img = models.URLField(blank=True, max_length=500)
+    starred_by = models.ManyToManyField(User, related_name="starred_experiences", blank=True)
     def __str__(self):
         return self.title
     
@@ -35,6 +36,7 @@ class Education(models.Model):
     year = models.CharField(max_length=90)
     started_at = models.DateTimeField(auto_now_add=True)
     ended_at = models.DateTimeField(blank=True, null=True)
+    starred_by = models.ManyToManyField(User, related_name="starred_education", blank=True)
     def __str__(self):
         return f"{self.degree} at {self.institution}"
     
